@@ -228,8 +228,11 @@ var bkEvent = {
 	}	
 };
 
-function __(s) {
-	return s;
+//Avoid overriding the function if already defined on a localization script
+if (!window.__) {
+    function __(s) {
+	    return s;
+    }
 }
 
 Function.prototype.closure = function() {
@@ -1144,7 +1147,7 @@ var nicEditorSelect = bkClass.extend({
 var nicEditorFontSizeSelect = nicEditorSelect.extend({
 	sel : {1 : '1&nbsp;(8pt)', 2 : '2&nbsp;(10pt)', 3 : '3&nbsp;(12pt)', 4 : '4&nbsp;(14pt)', 5 : '5&nbsp;(18pt)', 6 : '6&nbsp;(24pt)'},
 	init : function() {
-		this.setDisplay('Font&nbsp;Size...');
+		this.setDisplay(__('Font&nbsp;Size...'));
 		for(itm in this.sel) {
 			this.add(itm,'<font size="'+itm+'">'+this.sel[itm]+'</font>');
 		}		
@@ -1155,7 +1158,7 @@ var nicEditorFontFamilySelect = nicEditorSelect.extend({
 	sel : {'arial' : 'Arial','comic sans ms' : 'Comic Sans','courier new' : 'Courier New','georgia' : 'Georgia', 'helvetica' : 'Helvetica', 'impact' : 'Impact', 'times new roman' : 'Times', 'trebuchet ms' : 'Trebuchet', 'verdana' : 'Verdana'},
 	
 	init : function() {
-		this.setDisplay('Font&nbsp;Family...');
+		this.setDisplay(__('Font&nbsp;Family...'));
 		for(itm in this.sel) {
 			this.add(itm,'<font face="'+itm+'">'+this.sel[itm]+'</font>');
 		}
@@ -1163,10 +1166,10 @@ var nicEditorFontFamilySelect = nicEditorSelect.extend({
 });
 
 var nicEditorFontFormatSelect = nicEditorSelect.extend({
-		sel : {'p' : 'Paragraph', 'pre' : 'Pre', 'h6' : 'Heading&nbsp;6', 'h5' : 'Heading&nbsp;5', 'h4' : 'Heading&nbsp;4', 'h3' : 'Heading&nbsp;3', 'h2' : 'Heading&nbsp;2', 'h1' : 'Heading&nbsp;1'},
+    sel : {'p' : __('Paragraph'), 'pre' : __('Pre'), 'h6' : __('Heading&nbsp;6'), 'h5' : __('Heading&nbsp;5'), 'h4' : __('Heading&nbsp;4'), 'h3' : __('Heading&nbsp;3'), 'h2' : __('Heading&nbsp;2'), 'h1' : __('Heading&nbsp;1')},
 		
 	init : function() {
-		this.setDisplay('Font&nbsp;Format...');
+	    this.setDisplay(__('Font&nbsp;Format...'));
 		for(itm in this.sel) {
 			var tag = itm.toUpperCase();
 			this.add('<'+tag+'>','<'+itm+' style="padding: 0px; margin: 0px;">'+this.sel[itm]+'</'+tag+'>');
@@ -1181,8 +1184,8 @@ nicEditors.registerPlugin(nicPlugin,nicSelectOptions);
 /* START CONFIG */
 var nicLinkOptions = {
 	buttons : {
-		'link' : {name : 'Add Link', type : 'nicLinkButton', tags : ['A']},
-		'unlink' : {name : 'Remove Link',  command : 'unlink', noActive : true}
+	    'link' : {name : __('Add Link'), type : 'nicLinkButton', tags : ['A']},
+	    'unlink' : {name : __('Remove Link'),  command : 'unlink', noActive : true}
 	}
 };
 /* END CONFIG */
@@ -1191,17 +1194,17 @@ var nicLinkButton = nicEditorAdvancedButton.extend({
 	addPane : function() {
 		this.ln = this.ne.selectedInstance.selElm().parentTag('A');
 		this.addForm({
-			'' : {type : 'title', txt : 'Add/Edit Link'},
-			'href' : {type : 'text', txt : 'URL', value : 'http://', style : {width: '150px'}},
-			'title' : {type : 'text', txt : 'Title'},
-			'target' : {type : 'select', txt : 'Open In', options : {'' : 'Current Window', '_blank' : 'New Window'},style : {width : '100px'}}
+		    '' : {type : 'title', txt : __('Add/Edit Link')},
+		    'href' : {type : 'text', txt : __('URL'), value : 'http://', style : {width: '150px'}},
+			'title' : {type : 'text', txt : __('Title')},
+			'target' : {type : 'select', txt : __('Open In'), options : {'' : __('Current Window'), '_blank' : __('New Window')},style : {width : '100px'}}
 		},this.ln);
 	},
 	
 	submit : function(e) {
 		var url = this.inputs['href'].value;
 		if(url == "http://" || url == "") {
-			alert("You must enter a URL to Create a Link");
+		    alert(__("You must enter a URL to Create a Link"));
 			return false;
 		}
 		this.removePane();
@@ -1296,17 +1299,17 @@ var nicImageButton = nicEditorAdvancedButton.extend({
 	addPane : function() {
 		this.im = this.ne.selectedInstance.selElm().parentTag('IMG');
 		this.addForm({
-			'' : {type : 'title', txt : 'Add/Edit Image'},
-			'src' : {type : 'text', txt : 'URL', 'value' : 'http://', style : {width: '150px'}},
-			'alt' : {type : 'text', txt : 'Alt Text', style : {width: '100px'}},
-			'align' : {type : 'select', txt : 'Align', options : {none : 'Default','left' : 'Left', 'right' : 'Right'}}
+		    '' : {type : 'title', txt : __('Add/Edit Image')},
+		    'src' : {type : 'text', txt : __('URL'), 'value' : 'http://', style : {width: '150px'}},
+			'alt' : {type : 'text', txt : __('Alt Text'), style : {width: '100px'}},
+			'align' : {type : 'select', txt : __('Align'), options : {none : __('Default'),'left' : __('Left'), 'right' : __('Right')}}
 		},this.im);
 	},
 	
 	submit : function(e) {
 		var src = this.inputs['src'].value;
 		if(src == "" || src == "http://") {
-			alert("You must enter a Image URL to insert");
+			alert(__("You must enter a Image URL to insert"));
 			return false;
 		}
 		this.removePane();
